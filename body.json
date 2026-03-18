@@ -1,0 +1,12 @@
+{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "id": "t1",
+  "params": {
+    "name": "search_shop_catalog",
+    "arguments": {
+      "query": "sapatilhas de corrida",
+      "context": "cliente procura sapato de corrida"
+    }
+  }
+}

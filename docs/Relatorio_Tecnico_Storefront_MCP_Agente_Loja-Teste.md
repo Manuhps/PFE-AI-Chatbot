@@ -1,14 +1,14 @@
-# Relatório Técnico: Integração do Servidor Storefront MCP no Agente Xtreme
+# Relatório Técnico: Integração do Servidor Storefront MCP no Agente Loja-Teste
 
 ## 1. Introdução e Visão Geral do Storefront MCP
 
-O servidor Storefront MCP (Model Context Protocol) constitui o stateless JSON-RPC bridge entre agentes de IA e o ecossistema de dados comerciais da Shopify. Para o Agente Xtreme, permite interação direta com catálogo e lógica transacional sem interface gráfica tradicional.
+O servidor Storefront MCP (Model Context Protocol) constitui o stateless JSON-RPC bridge entre agentes de IA e o ecossistema de dados comerciais da Shopify. Para o Agente Loja-Teste, permite interação direta com catálogo e lógica transacional sem interface gráfica tradicional.
 
 Finalidade: habilitar navegação assistida, gestão dinâmica de carrinhos e resolução de dúvidas sobre políticas, focado em dados públicos de front-of-house.
 
 ## 2. Arquitetura de Conexão e Protocolo de Comunicação
 
-Endpoint determinístico da loja Xtreme:
+Endpoint determinístico da loja Loja-Teste:
 
 `https://{shop}.myshopify.com/api/mcp`
 
@@ -21,7 +21,7 @@ Padrões técnicos críticos:
 Exemplo de requisição (fetch):
 
 ```js
-fetch("https://xtreme-store.myshopify.com/api/mcp", {
+fetch("https://loja-teste-store.myshopify.com/api/mcp", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -55,21 +55,4 @@ Nota: obrigar grounding — o agente só deve usar dados retornados por estas fe
 - Remover item: definir `quantity: 0`.
 - CTA: ambas as ferramentas retornam `checkout_url` — apresentar como link destacado.
 
-## 5. Guia de Integração no Agente de IA Conversacional Xtreme
 
-Plano faseado:
-
-1. Mapeamento de Domínio: definir `xtreme-store.myshopify.com` para construção de endpoints.
-2. Descoberta de Ferramentas: usar `tools/list` para introspecção de esquemas.
-3. Injeção de Metadados: passar `context` com histórico de sessão e intenções.
-4. Grounding de Links: formatar `URL` retornada como hiperligações Markdown (`[Finalizar Compra](checkout_url)`).
-
-## 6. Considerações de Segurança e Performance
-
-- Conformidade: respeitar `Shopify API License and Terms of Use`.
-- Rate Limits: implementar lógica de retry/backoff para `429`.
-- Tratamento de Exceções: gerir mensagens genéricas de erro sem expor detalhes internos.
-
----
-
-Este relatório define a integração Storefront MCP e as práticas para operar o agente Xtreme com grounding rigoroso e fluxos de compra eficientes.

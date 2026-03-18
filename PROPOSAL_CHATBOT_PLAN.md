@@ -3,7 +3,7 @@
 Date: 2026-03-17
 
 Goal
-- Build an AI-powered chatbot prototype for Shopify stores (Xtreme) with a React frontend and Python backend that is grounded using Shopify MCP tools and the Admin/Storefront APIs.
+- Build an AI-powered chatbot prototype for Shopify stores (Loja-Teste) with a React frontend and Python backend that is grounded using Shopify MCP tools and the Admin/Storefront APIs.
 
 Scope
 - Minimal viable prototype that: answers product/store questions, performs cart operations (Storefront MCP), and can create/update products via the Admin API (developer demo). Integrations: MCP (dev), Admin GraphQL, Storefront MCP.

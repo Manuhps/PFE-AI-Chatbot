@@ -31,7 +31,7 @@ const variables = {
     title: 'MCP Test Product',
     status: 'ACTIVE',
     descriptionHtml: '<p>Created via Dev MCP test script</p>',
-    vendor: 'Xtreme'
+    vendor: 'Loja-Teste'
   }
 };
 

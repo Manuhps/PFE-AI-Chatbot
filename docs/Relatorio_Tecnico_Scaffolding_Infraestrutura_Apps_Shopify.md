@@ -2,7 +2,7 @@
 
 ## 1. Introdução e Contexto do Projeto
 
-Este relatório define os protocolos de infraestrutura e a configuração técnica do scaffold de uma aplicação Shopify para a loja "Xtreme". O objetivo central é estabelecer uma fundação de alto desempenho para um Agente de IA Conversacional Autónomo, utilizando o Model Context Protocol (MCP) para consumo síncrono de dados de catálogo e clientes.
+Este relatório define os protocolos de infraestrutura e a configuração técnica do scaffold de uma aplicação Shopify para a loja "Loja-Teste". O objetivo central é estabelecer uma fundação de alto desempenho para um Agente de IA Conversacional Autónomo, utilizando o Model Context Protocol (MCP) para consumo síncrono de dados de catálogo e clientes.
 
 ## 2. Requisitos Prévios do Sistema
 
@@ -26,7 +26,7 @@ Processo de inicialização via `shopify app init` — gera o código base e ins
 shopify app init
 
 # Selecionar "Build a React Router app" nos prompts
-cd xtreme-ai-agent
+cd loja-teste-ai-agent
 ```
 
 ## 4. Configuração do Ambiente de Desenvolvimento Local
@@ -102,25 +102,4 @@ const authUrl = `${oauthConfig.authorization_endpoint}?${params}`;
 
 > Nota: após configurar a autenticação, reinicie o servidor com `shopify app dev --use-localhost`.
 
-## 7. Capacidades e Ferramentas do Agente de IA
 
-Ferramentas essenciais para evitar alucinações e garantir validade:
-
-- `learn_shopify_api`: obrigatória — obter contexto e Conversation ID.
-- `search_docs_chunks`: pesquisa documental granular.
-- Operações Storefront: `search_shop_catalog`, `get_cart`, `update_cart`.
-- Validação Técnica: `validate_graphql_codeblocks`, `validate_theme`, `validate_component_codeblocks`.
-
-## 8. Tratamento de Erros e Limites de Débito
-
-Respostas padrão a considerar:
-
-1. Erros de Validação: descrição de parâmetros inválidos (ex: GID inválido).
-2. Erros de Processamento: "Unable to process the request, try again".
-3. Recurso Não Encontrado: mensagens explícitas (ex: "Order not found with number: {order_number}").
-
-Políticas de rate limiting: seguir regras da Shopify; implementar backoff exponencial para `429`.
-
----
-
-Este documento define a infraestrutura e os padrões necessários para criar um agente de IA conversacional autónomo integrado com a Shopify e preparado para produção.

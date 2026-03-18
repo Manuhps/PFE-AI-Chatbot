@@ -1,10 +1,10 @@
-# Relatório Técnico: Implementação de Servidores MCP na Infraestrutura da Loja Xtreme
+# Relatório Técnico: Implementação de Servidores MCP na Infraestrutura da Loja-Teste
 
-## 1. Introdução ao Ecossistema MCP para a Loja Xtreme
+## 1. Introdução ao Ecossistema MCP para a Loja-Teste
 
-Este relatório detalha a implementação do Model Context Protocol (MCP) na infraestrutura da Loja Xtreme. O MCP é um protocolo de arquitetura aberto que estabelece uma interface padronizada entre assistentes de IA e os recursos de dados comerciais da Shopify.
+Este relatório detalha a implementação do Model Context Protocol (MCP) na infraestrutura da Loja-Teste. O MCP é um protocolo de arquitetura aberto que estabelece uma interface padronizada entre assistentes de IA e os recursos de dados comerciais da Shopify.
 
-O objetivo estratégico desta implementação é permitir que agentes inteligentes consumam documentação técnica, consultem esquemas de API em tempo real e executem operações comerciais autenticadas. Ao adotar o MCP, a Loja Xtreme evolui de modelos de linguagem genéricos para agentes contextuais capazes de agir diretamente sobre o catálogo, carrinhos e dados de clientes, garantindo uma experiência de compra conversacional precisa e segura.
+O objetivo estratégico desta implementação é permitir que agentes inteligentes consumam documentação técnica, consultem esquemas de API em tempo real e executem operações comerciais autenticadas. Ao adotar o MCP, a Loja-Teste evolui de modelos de linguagem genéricos para agentes contextuais capazes de agir diretamente sobre o catálogo, carrinhos e dados de clientes, garantindo uma experiência de compra conversacional precisa e segura.
 
 ## 2. Preparação da Infraestrutura: Estruturação da Aplicação (Scaffold an app)
 
@@ -22,7 +22,6 @@ O comando `dev` automatiza processos complexos de infraestrutura:
 - Túnel Cloudflare: cria um túnel HTTPS seguro entre a máquina local e a web para webhooks e comunicação com a Shopify.
 - Base de Dados SQLite (Prisma): inicializa o armazenamento local para persistência de dados e sessões.
 - Conexão ao Partner Dashboard: regista automaticamente a app no painel de parceiros e sincroniza o ficheiro `.toml`.
-- Autenticação de Programador: valida permissões do utilizador na dev store.
 
 > Requisito de Segurança: uso de uma *dev store* é obrigatório para testes antes do deploy em produção.
 
@@ -74,7 +73,7 @@ Configuração Alternativa (Windows):
 
 Este servidor conecta a IA ao catálogo em tempo real. Corre no contexto da loja e permite operações de carrinho sem autenticação obrigatória (pública).
 
-- Endpoint previsto: `https://xtreme-store.myshopify.com/api/mcp`
+- Endpoint previsto: `https://loja-teste-store.myshopify.com/api/mcp`
 - Protocolo: JSON-RPC 2.0
 
 Exemplo de chamada JSON-RPC:
@@ -87,7 +86,7 @@ Exemplo de chamada JSON-RPC:
   "params": {
     "name": "search_shop_catalog",
     "arguments": {
-      "query": "tênis de corrida",
+      "query": "sapatilhas de corrida",
       "context": "Cliente procura alta durabilidade para maratonas"
     }
   }
@@ -95,7 +94,7 @@ Exemplo de chamada JSON-RPC:
 ```
 
 ### Definições de Ferramentas
-
+### "Exemplos de paths"
 - `search_shop_catalog`: localiza produtos. Parâmetros obrigatórios: `query` e `context`.
 - `get_cart`: recupera estado do carrinho via `cart_id` (GID).
 - `update_cart`: adiciona/remove itens; se `cart_id` omitido, inicia novo carrinho.
@@ -114,8 +113,8 @@ Descoberta de endpoints via `.well-known`:
 
 ```js
 const params = new URLSearchParams({
-  client_id: 'XTREME_APP_ID',
-  redirect_uri: 'https://xtreme-app.com/callback',
+  client_id: 'LOJA_TESTE_APP_ID',
+  redirect_uri: 'https://loja-teste-app.com/callback',
   response_type: 'code',
   scope: 'customer-account-mcp-api:full',
   code_challenge: 'PKCE_CHALLENGE',
@@ -130,17 +129,3 @@ Ao chamar o MCP após obter o token, incluir `Authorization: YOUR_ACCESS_TOKEN`.
 - Global IDs (GID): obrigatório (`gid://shopify/Order/123456789`).
 - Datas: formato ISO 8601 (`2023-10-27T10:00:00Z`).
 
-## 6. Integração e Fluxo de Trabalho na Loja Xtreme
-
-### Checklist de Implementação
-
-- [ ] Fase 1 (Ambiente): Scaffold da app com template React Router e configuração do Shopify CLI.
-- [ ] Fase 2 (Desenvolvimento): Configurar `@shopify/dev-mcp` no Cursor/VSCode e usar `learn_shopify_api`.
-- [ ] Fase 3 (Storefront): Validar `/api/mcp` e testar `search_shop_catalog` com `context` obrigatório.
-- [ ] Fase 4 (Segurança): Configurar domínio personalizado e solicitar Level 2 PII.
-- [ ] Fase 5 (Autenticação): Implementar descoberta via `.well-known` e fluxo PKCE.
-- [ ] Fase 6 (Validação): Executar `tools/list` em cada servidor para confirmar capacidades.
-
----
-
-Este documento estabelece a fundação técnica para que a Loja Xtreme lidere a próxima vaga de comércio conversacional assistido por IA.

@@ -1,4 +1,4 @@
-# MCP Setup Changes — Xtreme AI Chatbot Project
+# MCP Setup Changes — Loja-Teste AI Chatbot Project
 
 Date: 2026-03-17
 

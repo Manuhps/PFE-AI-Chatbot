@@ -1,10 +1,10 @@
-# Relatório Técnico: Implementação do Shopify Dev MCP Server para a Loja Xtreme
+# Relatório Técnico: Implementação do Shopify Dev MCP Server para a Loja-Teste
 
 ## 1. Introdução e Objetivos do Projeto
 
-Este relatório técnico descreve a arquitetura e os procedimentos de implementação do servidor Shopify Dev Model Context Protocol (MCP) para a Loja Xtreme. No ecossistema de agentes de IA modernos, o protocolo MCP é o padrão-ouro para fornecer contexto em tempo real, permitindo que Large Language Models (LLMs) transcendam os seus dados de treino estáticos.
+Este relatório técnico descreve a arquitetura e os procedimentos de implementação do servidor Shopify Dev Model Context Protocol (MCP) para a Loja-Teste. No ecossistema de agentes de IA modernos, o protocolo MCP é o padrão-ouro para fornecer contexto em tempo real, permitindo que Large Language Models (LLMs) transcendam os seus dados de treino estáticos.
 
-Para a Loja Xtreme, a integração deste servidor permite que o Agente de IA Conversacional aceda dinamicamente a esquemas de API, documentação oficial (`shopify.dev`) e ferramentas de validação. O objetivo é duplo: acelerar o ciclo de desenvolvimento de extensões e garantir que as respostas do assistente sejam tecnicamente rigorosas e livres de alucinações de código.
+Para a Loja-Teste, a integração deste servidor permite que o Agente de IA Conversacional aceda dinamicamente a esquemas de API, documentação oficial (`shopify.dev`) e ferramentas de validação. O objetivo é duplo: acelerar o ciclo de desenvolvimento de extensões e garantir que as respostas do assistente sejam tecnicamente rigorosas e livres de alucinações de código.
 
 ## 2. Configuração do Ambiente e Requisitos Prévios
 
@@ -64,9 +64,9 @@ Uso recomendado: o agente deve executar `tools/list` para mapear capacidades e p
 
 ## 5. Integração de Comércio com Storefront MCP
 
-Endpoint público de Storefront para a Xtreme:
+Endpoint público de Storefront para a Loja-Teste:
 
-`https://xtreme-store.myshopify.com/api/mcp`
+`https://loja-teste-store.myshopify.com/api/mcp`
 
 Notas:
 
@@ -104,4 +104,4 @@ Guia de implementação resumido:
 
 ---
 
-Este relatório fornece o procedimento e as melhores práticas para operar o Shopify Dev MCP Server no contexto técnico da Loja Xtreme.
+Este relatório fornece o procedimento e as melhores práticas para operar o Shopify Dev MCP Server no contexto técnico da Loja-Teste.
