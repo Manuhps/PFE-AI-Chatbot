@@ -163,3 +163,44 @@ npm start
   3. Frontend básico que realiza buscas e inicia checkout via `checkout_url`.
   4. Documentação com comandos de teste e exemplos de payload (incluir em `backend/README.md` e `frontend/README.md`).
 
+9. Fluxo de trabalho AI Chatbot
+
+Descrição: o seguinte é um guia operativo preciso que descreve como o chatbot deve funcionar em produção, incluindo decisões, chamadas e tratamento de estado.
+
+- 2) Classificação de intenção e extracção de entidades
+  - Executar um intent classifier local ou serviço externo (intents: `search`, `add_to_cart`, `view_cart`, `policy`, `auth`, `fallback`).
+  - Extrair slots: `query`, `quantity`, `variant_id`, filtros (preço, tamanho) e normalizar valores.
+
+- 3) Enriquecimento do contexto
+  - Anexar informação contextual: histórico curto da conversa, preferências de idioma, localização e estado do carrinho.
+  - Resolver ambiguidades (ex.: perguntar tamanho se não fornecido).
+
+- 4) Planeamento e mapeamento para ferramenta MCP
+  - Mapear intenção para ferramenta MCP apropriada: `search_shop_catalog`, `update_cart`, `get_cart`, `search_shop_policies_and_faqs`.
+  - Decidir chamada via proxy REST interno (`/api/search`, `/api/cart`) que traduz para JSON‑RPC.
+
+- 5) Chamada ao proxy e envio JSON‑RPC
+  - Frontend faz REST ao proxy (ex.: `POST /api/search`), não chama MCP diretamente.
+  - Proxy constrói JSON‑RPC conforme o padrão e faz `POST` a `https://{shop}.myshopify.com/api/mcp`.
+  - Configurar timeouts (~5s) e 1–2 retries com backoff exponencial.
+
+- 6) Normalização do resultado
+  - Proxy parseia `result.content[0].text` (quando presente) e valida o JSON.
+  - Normalizar campos para o frontend: `product_id`, `title`, `description`, `price` (number + currency), `image_url`, `variants`, `checkout_url`.
+
+- 7) Resposta ao utilizador e actualização do estado
+  - Gerar resposta conversacional curta + blocos de produto (cartões) com CTAs (`Adicionar`, `Ver checkout`).
+  - Se `update_cart` criou/alterou `cart_id`, persistir no estado da sessão.
+
+- 8) Persistência e observabilidade
+  - Guardar `cart_id`, última query e timestamps (Redis/SQLite). Logar eventos e métricas (latência, erros, hits de cache).
+
+
+- Sequência técnica rápida (exemplo)
+  1. UI -> `POST /api/search` {"query":"tênis de corrida","session_id":"s-123"}
+  2. Proxy -> JSON‑RPC `search_shop_catalog` -> MCP -> retorna payload
+  3. Proxy parseia e devolve lista de produtos ao UI
+  4. UI -> `POST /api/cart` {"add_items":[{"merchandise_id":"gid://shopify/ProductVariant/111","quantity":1}],"session_id":"s-123"}
+  5. Proxy -> JSON‑RPC `update_cart` -> MCP -> retorna `cart_id` e `checkout_url`
+  6. Proxy persiste `cart_id` e retorna `checkout_url` ao UI
+
