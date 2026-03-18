@@ -131,6 +131,34 @@ A arquitetura proposta combina scaffold oficial, Dev MCP para validação, Store
   - Variáveis sensíveis (ex.: `SHOP_DOMAIN`, `ADMIN_TOKEN`) só no servidor; nunca expor no frontend.
   - Para Customer Accounts: implementar PKCE no fluxo OAuth e armazenar tokens em secret store.
 
+- Papel: o Storefront MCP deve ser a fonte primária para respostas de catálogo e carrinho. No entanto, quando o MCP retornar um conjunto de fields limitado ou faltar dados administrativos (ex.: metafields, inventário detalhado, imagens adicionais, preços promocionais específicos), o proxy no backend pode enriquecer a resposta consultando a Admin GraphQL API do Shopify.
+
+- Fluxo recomendado:
+  1. Proxy chama MCP (`search_shop_catalog` etc.) e tenta obter todas as informações públicas necessárias.
+  2. Se faltar fields essenciais para a UX, o proxy faz uma chamada segura ao Admin GraphQL (server→server) usando `ADMIN_TOKEN` armazenado em env/secret store.
+  3. O proxy junta (merge) os dados do MCP com os resultados do Admin GraphQL, aplica validação e cacheia o resultado por um TTL curto.
+
+- Segurança e desempenho:
+  - Nunca expor chamadas Admin GraphQL ao frontend; sempre executar no servidor.
+  - Limitar chamadas ao Admin GraphQL: usar cache e só enriquecer quando realmente necessário.
+  - Registar e monitorizar chamadas ao Admin API para controlar custos e limites de rate.
+
+- Exemplo de intenção de query Admin GraphQL (executada no proxy):
+
+```graphql
+query ProductById($id: ID!) {
+  product(id: $id) {
+    id
+    title
+    metafields(namespaces: "specs") { edges { node { key value } } }
+    totalInventory
+    images(first: 5) { edges { node { url } } }
+  }
+}
+```
+
+Este padrão (MCP → enrich via Admin GraphQL) equilibra segurança, performance e cobertura de dados.
+
 - Frontend (mínimo): componente React que chama `/api/search`, renderiza lista de produtos, permite adicionar ao carrinho via chamadas a `/api/cart` e apresenta `checkout_url` retornado.
 
 - Testes e ferramentas de verificação:
