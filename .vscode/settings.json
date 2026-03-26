@@ -1,0 +1,17 @@
+{
+  // Não restaurar janelas/terminais ao abrir o VSCode
+  "window.restoreWindows": "none",
+  "window.restoreFullscreen": false,
+
+  // Desativa sessões persistentes do terminal (impede restaurar terminais antigos)
+  "terminal.integrated.enablePersistentSessions": false,
+
+  // Confirmar antes de matar terminais
+  "terminal.integrated.confirmOnKill": true,
+
+  // Desativa a integração automática de shell (reduz auto‑starts de tarefas relacionadas)
+  "terminal.integrated.shellIntegration.enabled": false,
+
+  // Evita que detectores de tarefas automáticas corram tasks inesperadas (se suportado pela versão do VSCode)
+  "tasks.autoDetect": "off"
+}
