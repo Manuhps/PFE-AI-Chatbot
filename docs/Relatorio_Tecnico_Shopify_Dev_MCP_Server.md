@@ -26,7 +26,10 @@ O servidor `shopify-dev-mcp` deve ser configurado como um servidor local stdio. 
 npx -y @shopify/dev-mcp@latest
 ```
 
-Cursor (exemplo de configuração JSON):
+VSCode (configuração de utilizador MCP):
+
+1. Abra o VSCode e execute o comando `MCP: Open User Configuration` (Command Palette).
+2. No ficheiro de configuração de MCP do utilizador, adicione um bloco `mcpServers` com a entrada abaixo:
 
 ```json
 {
@@ -39,15 +42,13 @@ Cursor (exemplo de configuração JSON):
 }
 ```
 
-Importante (Windows): se houver erro de conexão, usar `command: "cmd"` com `args: ["/k", "npx", "-y", "@shopify/dev-mcp@latest"]`.
+Importante (Windows): se houver erro de conexão, use `command: "cmd"` com `args`: `"/k", "npx", "-y", "@shopify/dev-mcp@latest"`.
 
-Claude Code / Desktop:
+Após guardar a configuração, inicie o servidor Dev MCP a partir do VSCode usando `MCP: Start Servers` (Command Palette) ou execute diretamente no terminal:
 
 ```bash
-claude mcp add --transport stdio shopify-dev-mcp -- npx -y @shopify/dev-mcp@latest
+npx -y @shopify/dev-mcp@latest
 ```
-
-VSCode: abrir `MCP: Open User Configuration` e inserir bloco `servers` equivalente.
 
 ## 4. Funcionalidades e Ferramentas de Desenvolvimento (Dev MCP)
 
@@ -103,5 +104,3 @@ Guia de implementação resumido:
 - Implementar backoff para `429` (rate limits).
 
 ---
-
-Este relatório fornece o procedimento e as melhores práticas para operar o Shopify Dev MCP Server no contexto técnico da Loja-Teste.
